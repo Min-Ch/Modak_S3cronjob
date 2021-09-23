@@ -13,7 +13,7 @@ class CloudStorage:
 
     def get_file_list(self):
         response = self.s3_client.list_objects_v2(Bucket = self.bucket)
-        return response['Contents']
+        return response.get('Contents')
     
     def delete_file_list(self, objs):
         self.s3_client.delete_objects(Bucket = self.bucket, Delete = {'Objects': objs})
