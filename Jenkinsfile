@@ -1,4 +1,4 @@
-def icons = [":unicorn_face:", ":beer:", ":bee:", ":man_dancing:", ":party_sunny:", ":ghost:", ":dancer:", ":scream_cat:", ":star:", ":stars:"]
+def icons = [":unicorn_face:", ":beer:", ":bee:", ":man_dancing:", ":partly_sunny:", ":ghost:", ":dancer:", ":scream_cat:", ":star:", ":stars:"]
 def randomIndex = (new Random()).nextInt(icons.size())
 
 pipeline {
@@ -21,7 +21,7 @@ pipeline {
   stages {
     stage('Start') {
       steps {
-        slackSend color: '#00FF00', message: "<!channel>\n*<CRONJOB STARTED>*\n<${env.RUN_DISPLAY_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> ${icons[randomIndex]}"
+        slackSend color: '#00FF00', message: ":seonkins:\n<!channel>\n*<CRONJOB STARTED>*\n<${env.RUN_DISPLAY_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> ${icons[randomIndex]}"
       }
     }
     stage('DELETE S3 images unused') {
