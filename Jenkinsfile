@@ -1,3 +1,6 @@
+def icons = [":unicorn_face:", ":beer:", ":bee:", ":man_dancing:", ":party_sunny:", ":ghost:", ":dancer:", ":scream_cat:", ":star:", ":stars:"]
+def randomIndex = (new Random()).nextInt(icons.size())
+
 pipeline {
   agent {
     docker {
@@ -16,6 +19,11 @@ pipeline {
     DATABASES                  = credentials('DATABASES')
   }
   stages {
+    stage('Start') {
+      steps {
+        slackSend color: '#00FF00', message: "<!channel>\n*<CRONJOB STARTED>*\n<${env.RUN_DISPLAY_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> ${icons[randomIndex]}"
+      }
+    }
     stage('DELETE S3 images unused') {
       steps {
         sh 'echo "dwen is handsome"'
@@ -34,6 +42,12 @@ pipeline {
   post {
     always {
       cleanWs()
+    }
+    success {
+      slackSend color: '#00FF00', message: "<!channel>\n*<CRONJOB SUCCEED>*\n<${env.RUN_DISPLAY_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> ${icons[randomIndex]}"
+    }
+    failure {
+      slackSend color: '#FF0000', message: "<!channel>\n*<CRONJOB FAILED>*\n~<${env.RUN_DISPLAY_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}>~\nPlease check <${env.RUN_DISPLAY_URL}|Console log> ${icons[randomIndex]}"
     }
   }
 }
